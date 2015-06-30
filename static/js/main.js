@@ -2,6 +2,27 @@
 if (!Date.now) {
     Date.now = function() { return new Date().getTime(); }
 }
+/* https://gist.github.com/Squeegy/1d99b3cd81d610ac7351 */
+(function() {
+  window.accurateInterval = function(time, fn) {
+    var cancel, nextAt, timeout, wrapper, _ref;
+    nextAt = new Date().getTime() + time;
+    timeout = null;
+    if (typeof time === 'function') _ref = [time, fn], fn = _ref[0], time = _ref[1];
+    wrapper = function() {
+      nextAt += time;
+      timeout = setTimeout(wrapper, nextAt - new Date().getTime());
+      return fn();
+    };
+    cancel = function() {
+      return clearTimeout(timeout);
+    };
+    timeout = setTimeout(wrapper, nextAt - new Date().getTime());
+    return {
+      cancel: cancel
+    };
+  };
+}).call(this);
 
 //global variables
 var orig = new Date("Jun 29 08:01:00 +0000 2015");
@@ -23,9 +44,10 @@ function resetTime(){
 
 function showDiff(){
     //if the function calls itself immediately it's more likely to take exactly 1 second to happen again, just have to make sure the contents take less than that
-    loop = setTimeout(showDiff,1000);
+    //loop = setTimeout(showDiff,1000);
     resetTime();
     var now = Date.now();
+    //console.log(now);
     var output = moment.preciseDiff(now, orig);
     output = output.split(" ");
 
@@ -60,12 +82,15 @@ function showDiff(){
             }
 
             var wrapper = $time.find('.timeunit[data-name=' + key + ']').attr('class','timeunit shown');//find the relevant element and set it up
-            var digits = wrapper.find('.digits');
+            var digits = wrapper.find('.digits').attr('data-next',digit).attr('data-now',prevdigit);
 
-            digits.attr('data-next',digit).attr('data-now',prevdigit);
+            digits.find('.next').remove();
+            digits.find('.prev').remove();
+
+            $('<div/>').addClass('next').html(digit).appendTo(digits);
+            $('<div/>').addClass('prev').html(prevdigit).appendTo(digits);
+
             digits.find('.number').html(digit);
-            digits.find('.next').html(digit);
-            digits.find('.prev').html(prevdigit);
             wrapper.find('.units').html(unit);
 
             if(time[key] != prevtime[key] || (digit == '00' && key == 'seconds')){ //only animate if the number has changed or the unit is 0 and seconds. Otherwise when you hit 0 on minutes etc. it just animates forever
@@ -74,18 +99,27 @@ function showDiff(){
             else {
                 digits.attr('class','digits');
             }
+
         }
     }
     backupTime();
+    //loop = setTimeout(showDiff,1000);
 }
 
 $(function() {
+    /*
     var wait = 1;
     //in theory if we start on an exact second the js should be in sync with the css animation
     while(wait){
         if(Date.now() % 1000 === 0){
             wait = 0;
-            showDiff();
+            //window.setInterval(showDiff,1000);
+            accurateInterval(1000,showDiff);
+            //showDiff();
         }
     }
+    */
+    //showDiff();
+    accurateInterval(1000,showDiff);
+
 });

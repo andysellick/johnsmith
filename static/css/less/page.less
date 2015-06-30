@@ -11,8 +11,8 @@
     }
 
     main {}
-    
-    @time:1s;
+
+    @time: 1s;
     @corner: 5px;
 
     .timewrap {
@@ -41,9 +41,9 @@
                 line-height:1.25em;
                 color:#303030;
 
-                &:before { // this is the horizontal dividing line
+                &:after { // this is the horizontal dividing line
                     content:"";
-                    z-index:2;
+                    z-index:5;
                     position:absolute;
                     top:50%;
                     left:0;
@@ -59,26 +59,11 @@
                 position:relative;
                 padding:10px;
                 
-                .next {
+                &:before { /* this is the top half of the number and contains the current number. It begins visible, then flips down */
                     display:none;
+                    content:attr(data-now);
                     position:absolute;
-                    z-index:1;
-                    top:0;
-                    left:0;
-                    width:100%;
-                    height:50%;
-                    padding:10px 10px 0 10px;
-                    .border-box();
-                    .border-radius( @corner @corner 0 0 );
-                    .box-shadow( ~"0 1px 0 0px rgba(255,255,255,1) inset, 1px 0 0 rgba(255,255,255,1) inset, -1px 0 0 rgba(255,255,255,1) inset" );
-                    overflow:hidden;
-                    .vertical-gradient( #d3d3d3, 0%, #d0d0d0, 100% );
-                    text-shadow:0px 2px 1px #ffffff;
-                }
-                .prev {
-                    display:none;
-                    position:absolute;
-                    z-index:1;
+                    z-index:2;
                     top:0;
                     left:0;
                     width:100%;
@@ -92,11 +77,11 @@
                     border-top:solid 1px #787878;
                     text-shadow:0px 2px 1px #ffffff;
                 }
-                &:after {
+                &:after { /* this is the bottom half of the new number and begins obscured, flipping over to reveal its contents */
                     display:none;
                     content:attr(data-next);
                     position:absolute;
-                    z-index:1;
+                    z-index:2;
                     top:50%;
                     left:0;
                     width:100%;
@@ -110,12 +95,29 @@
                     .vertical-gradient( #ededed, 0%, #dadada, 100% );
                     text-shadow:0px 2px 1px #ffffff;
                 }
-                &:before {
+                
+                .next { /* this element appears as the top half of the number and contains the next number. It begins obscured */
                     display:none;
-                    content:attr(data-now);
                     position:absolute;
                     z-index:1;
-                    top:50%;
+                    top:0;
+                    left:0;
+                    width:100%;
+                    height:50%;
+                    padding:10px 10px 0 10px;
+                    overflow:hidden;
+                    .border-box();
+                    .border-radius( @corner @corner 0 0 );
+                    .box-shadow( ~"0 1px 0 0px rgba(255,255,255,1) inset, 1px 0 0 rgba(255,255,255,1) inset, -1px 0 0 rgba(255,255,255,1) inset" );
+                    .vertical-gradient( #d3d3d3, 0%, #d0d0d0, 100% );
+                    text-shadow:0px 2px 1px #ffffff;
+
+                }
+                .prev {
+                    display:none;
+                    position:absolute;
+                    z-index:1;
+                    bottom:0;
                     left:0;
                     width:100%;
                     height:50%;
@@ -130,10 +132,7 @@
                 }
 
                 &.animate {
-                    .next { /* this element appears as the top half of the number and contains the next number. It begins obscured */
-                        display:block;
-                    }
-                    .prev { /* this element appears as the top half of the number and contains the current number. It begins visible, then flips down */
+                    &:before { /* this is the top half of the number and contains the current number. It begins visible, then flips down */
                         display:block;
                         .transform( perspective(300px) rotateX(0deg) );
                         .transform-point( 50% 100% );
@@ -151,7 +150,12 @@
                         -o-animation:      anim2 @time linear infinite; /* Opera 12+ */
                         animation:         anim2 @time linear infinite; /* IE 10+, Fx 29+ */
                     }
-                    &:before { /* this is an extra element of the bottom half of the number, to make everything line up, since all the other elements have borders */
+
+                    .next { /* this element appears as the top half of the number and contains the next number. It begins obscured */
+                        display:block;
+                    }
+
+                    .prev { /* this is an extra element of the bottom half of the current number, to make everything line up, since all the other elements have borders */
                         display:block;
                     }
                 }

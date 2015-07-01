@@ -40,7 +40,7 @@ var timeline = [
     {
         'date':"Feb 1 00:00:00 +0000 2014",
         'title':'This is another test item',
-        'content':'<p>This is the content of the test item.</p><p>It might contain a number of paragraphs.</p><p>And what if it does, and that causes a huge space problem?</p>'
+        'content':'<p>This is the content of the test item.</p><p>It might contain a number of paragraphs.</p><p>And what if it does, and that causes a huge space problem?</p><p>Well maybe I have been clever and fixed it. What do you think of that, eh?</p>'
     },
     {
         'date':"Mar 1 00:00:00 +0000 2015",
@@ -171,7 +171,7 @@ $(function() {
             }
         },0);
     });
-    
+
     //do the timeline
     var $tl = $('#timelinecontent');
     var origin = Date.parse(orig)
@@ -204,11 +204,14 @@ $(function() {
     
     $('body').on('click',function(){
         $('.tlitem').removeClass('active');
+        $tl.css('margin-bottom','50px'); //slightly cheating trick to get around the need for overflow:hidden on the timeline
     });
-    
+
     $('.tlitem').on('click',function(e){
         e.stopPropagation();
         $('.tlitem').removeClass('active');
         $(this).addClass('active');
+        var h = $(this).find('.content').outerHeight() + 20; //slightly cheating trick to get around the need for overflow:hidden on the timeline
+        $tl.css('margin-bottom',h);
     });
 });

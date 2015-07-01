@@ -2,27 +2,26 @@
 if(!Date.now){
     Date.now = function() { return new Date().getTime(); }
 }
-/* https://gist.github.com/Squeegy/1d99b3cd81d610ac7351 */
-(function() {
-  window.accurateInterval = function(time, fn) {
-    var cancel, nextAt, timeout, wrapper, _ref;
-    nextAt = new Date().getTime() + time;
-    timeout = null;
-    if (typeof time === 'function') _ref = [time, fn], fn = _ref[0], time = _ref[1];
-    wrapper = function() {
-      nextAt += time;
-      timeout = setTimeout(wrapper, nextAt - new Date().getTime());
-      return fn();
-    };
-    cancel = function() {
-      return clearTimeout(timeout);
-    };
-    timeout = setTimeout(wrapper, nextAt - new Date().getTime());
-    return {
-      cancel: cancel
-    };
-  };
-}).call(this);
+
+// Function from David Walsh: http://davidwalsh.name/css-animation-callback
+function whichTransitionEvent(){
+  var t,
+      el = document.createElement("fakeelement");
+  var transitions = {
+    "transition"      : "transitionend",
+    "OTransition"     : "oTransitionEnd",
+    "MozTransition"   : "transitionend",
+    "WebkitTransition": "webkitTransitionEnd"
+  }
+  for (t in transitions){
+    if (el.style[t] !== undefined){
+      return transitions[t];
+    }
+  }
+}
+var transitionEvent = whichTransitionEvent();
+
+
 
 
 //global variables
@@ -32,6 +31,7 @@ var time = {'year':'00','month':'00','day':'00','hour':'00','minute':'00','secon
 var prevtime = {'year':'00','month':'00','day':'00','hour':'00','minute':'00','second':'00'};
 var limits = {'year':10000,'month':11,'day':366,'hour':23,'minute':59,'second':59};
 var currentscale = 0;
+var timer;
 
 (function( window, undefined ) {
 var lenny = {
@@ -46,10 +46,10 @@ var lenny = {
         resetTime: function(){
             time = {'year':'00','month':'00','day':'00','hour':'00','minute':'00','second':'00'};
         },
+        //do the clock
         showDiff: function(){
             lenny.general.resetTime();
             var now = Date.now();
-            //console.log(now);
             var output = moment.preciseDiff(now, orig);
             output = output.split(" ");
         
@@ -62,7 +62,7 @@ var lenny = {
                 time[unit] = num; //this only happens if moment returns a value for this digit type, which it doesn't do if it's 0
             }
             var ok = 0;
-        
+
             for(var key in time){
                 if(time[key] != '00' || ok){
                     ok = 1;
@@ -95,7 +95,7 @@ var lenny = {
                     digits.find('.number').html(digit);
                     wrapper.find('.units').html(unit);
 
-                    if(time[key] != prevtime[key] || (digit == '00' && key == 'seconds')){ //only animate if the number has changed or the unit is 0 and seconds. Otherwise when you hit 0 on minutes etc. it just animates forever
+                    if(time[key] != prevtime[key] || (digit == '00' && key == 'seconds')){ //only animate if num changed or unit is 0 and seconds. Otherwise at 0 on minutes etc. just animates forever
                         digits.attr('class','digits animate'); //in theory this is quicker than addClass
                     }
                     else {
@@ -118,8 +118,23 @@ $(function() {
     while(wait){
         if(Date.now() % 1000 === 0){
             wait = 0;
-            accurateInterval(1000,lenny.general.showDiff);
+            $('#trigger').addClass('active');
         }
     }
+
+    //since CSS animation and JS timing of 1 second seems to differ, we trigger the next loop of the JS after a trigger element's transition is complete
+    $('.trigger').on(transitionEvent,function(event) {
+        // Do something when the transition ends
+        clearTimeout(timer);
+        timer = setTimeout(function(){
+            lenny.general.showDiff();
+            if($('#trigger').hasClass('active')){
+                $('#trigger').removeClass('active');
+            }
+            else {
+                $('#trigger').addClass('active');
+            }
+        },0);
+    });
 
 });

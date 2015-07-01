@@ -10,8 +10,6 @@
         color:#333333;
     }
 
-    main {}
-
     @time: 1s;
     @corner: 5px;
 
@@ -58,7 +56,8 @@
             .digits {
                 position:relative;
                 padding:10px;
-                
+                .transition( all 1s );
+
                 &:before { /* this is the top half of the number and contains the current number. It begins visible, then flips down */
                     display:none;
                     content:attr(data-now);
@@ -71,7 +70,6 @@
                     padding:10px 10px 0 10px;
                     .border-box();
                     .border-radius( @corner @corner 0 0 );
-                    //.box-shadow( 0 0 0 1px rgba(255,255,255,1) inset );
                     overflow:hidden;
                     .vertical-gradient( #d3d3d3, 0%, #d0d0d0, 100% );
                     border-top:solid 1px #787878;
@@ -209,5 +207,12 @@
         }
         100% {
             .transform( perspective(300px) scaleX(-1) rotate(180deg) rotateX(180deg) );
+        }
+    }
+
+    .trigger {
+        .transition( all 0.4s ); //transition speed is less than 1 second, which, oddly, seems to work
+        &.active {
+            .transparency( 0.99 );
         }
     }

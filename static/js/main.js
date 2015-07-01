@@ -185,7 +185,6 @@ $(function() {
     //and the second is the startAtElementId element used to initialise the plugin below. A bit hacky but it's the only way I can get it to work and still allow the user to scroll back in time
     $('#buffer').css('width',tllength - ($(window).outerWidth() / 1.5));
 
-
     for(var i = 0; i < timeline.length; i++){
         var date = new Date(timeline[i]['date']);
         var pos = Date.parse(date) - origin;

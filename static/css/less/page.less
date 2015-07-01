@@ -216,3 +216,106 @@
             .transparency( 0.99 );
         }
     }
+    
+    .tlwrap {
+        height:100px;
+        .tl {
+            position:relative;
+        	float: left;
+            height:50px;
+            margin:50px 0 100px 0;
+            margin-left:500px;
+            background-color: gray;
+            background-image: repeating-linear-gradient(45deg, transparent, transparent 35px, rgba(255,255,255,.5) 35px, rgba(255,255,255,.5) 70px);
+            color:#FFFFFF;
+            
+            &:after {
+                content:"";
+                position:absolute;
+                top:-25px;
+                right:-100px;
+                border-style:solid;
+                border-width:50px;
+                border-color:transparent transparent transparent gray;
+            }
+
+            /* was a more complex arrowhead but doesn't look great
+            &:before,
+            &:after {
+                content:"";
+                position:absolute;
+                top:-20px;
+                right:-50px;
+                width:130px;
+                height:60%;
+                background:gray;
+                .border-radius( 0 20px 20px 0 );
+                .transform( rotate(25deg) );
+            }
+            &:after {
+                top:auto;
+                bottom:-20px;
+                .transform( rotate(-25deg) );
+            }
+            */
+
+            .tlitem {
+                position:absolute;
+                top:100%;
+                width:400px;
+                margin-left:-200px;
+                margin-top:5px;
+
+                &:before {
+                    content:"";
+                    position:absolute;
+                    bottom:100%;
+                    left:50%;
+                    width:20px;
+                    height:20px;
+                    margin-left:-10px;
+                    margin-bottom:15px;
+                    background:blue;
+                    .border-radius( 50px );
+                    cursor:pointer;
+                }
+                &:hover {
+                    &:after {
+                        background:yellow;
+                    }
+                }
+
+                .content {
+                    padding:10px;
+                    background:gray;
+                    visibility:hidden;
+                    .transparency( 0 );
+                    .transition( all 0.5s );
+                    &:before {
+                        content:"";
+                        position:absolute;
+                        bottom:100%;
+                        left:50%;
+                        margin-left:-10px;
+                        border-style:solid;
+                        border-width:10px;
+                        border-color:transparent transparent gray transparent;
+                    }
+                }
+
+                &.active {
+                    .content {
+                        visibility:visible;
+                        .transparency( 1 );
+                    }
+                }
+
+            }
+            .buffer {
+                float:left;
+            }
+        }
+        .scrollWrapper {
+            overflow:hidden;
+        }
+    }

@@ -22,16 +22,32 @@ function whichTransitionEvent(){
 var transitionEvent = whichTransitionEvent();
 
 
-
-
 //global variables
-var orig = new Date("Jul 1 09:48:00 +0000 2015");
+var orig = new Date("Jan 1 00:00:00 +0000 2014"); //fixme this is out by an hour FOR SMALL NUMBERS ONLY e.g. set to 10am and view at 11:15, difference is 15 mins, not an hour 15 - but from start of year timing is accurate
 var $time = $('#time');
 var time = {'year':'00','month':'00','day':'00','hour':'00','minute':'00','second':'00'};
 var prevtime = {'year':'00','month':'00','day':'00','hour':'00','minute':'00','second':'00'};
 var limits = {'year':10000,'month':11,'day':366,'hour':23,'minute':59,'second':59};
 var currentscale = 0;
 var timer;
+
+var timeline = [
+    {
+        'date':"Jan 2 00:00:00 +0000 2014",
+        'title':'This is a test item',
+        'content':'<p>This is the content of the test item.</p><p>It might contain a number of paragraphs.</p>'
+    },
+    {
+        'date':"Mar 1 00:00:00 +0000 2014",
+        'title':'This is another test item',
+        'content':'<p>This is the content of the test item.</p><p>It might contain a number of paragraphs.</p>'
+    },
+    {
+        'date':"Jul 1 00:00:00 +0000 2015",
+        'title':'This is another test item',
+        'content':'<p>This is the content of the test item.</p><p>It might contain a number of paragraphs.</p>'
+    }
+];
 
 (function( window, undefined ) {
 var lenny = {
@@ -105,6 +121,9 @@ var lenny = {
             }
             lenny.general.backupTime();
         }
+    },
+    timeline: {
+
     }
 
 };
@@ -113,6 +132,17 @@ window.lenny = lenny;
 
 
 $(function() {
+    /*
+    var currentdate = new Date();
+    var datetime = "Now: " + currentdate.getDate() + "/"
+                + (currentdate.getMonth()+1)  + "/"
+                + currentdate.getFullYear() + " @ "
+                + currentdate.getHours() + ":"
+                + currentdate.getMinutes() + ":"
+                + currentdate.getSeconds();
+    console.log(datetime);
+    */
+
     var wait = 1;
     //in theory if we start on an exact second the js should be in sync with the css animation. In theory.
     while(wait){
@@ -136,5 +166,44 @@ $(function() {
             }
         },0);
     });
+    
+    //do the timeline
+    var $tl = $('#timelinecontent');
+    var origin = Date.parse(orig)
+    var tllength = Date.now() - origin; //base the length of the timeline on the time difference
+    tllength = Math.floor((tllength / 10000000) / 2);
+    $tl.css('width', tllength + 'px');
+    console.log(tllength);
+    
+    //this code positions the 'view' to the far right of the timeline
+    //due to a quirk of how the plugin works, this only works on elements that are floated left. It won't work on absolutely positioned elements or elements with an offset using a margin
+    //SO! to position the viewport we have two DIVs in the markup with zero height and floated left. The first is given the width of how far along the view we want to start at,
+    //and the second is the startAtElementId element used to initialise the plugin below. A bit hacky but it's the only way I can get it to work and still allow the user to scroll back in time
+    $('#buffer').css('width',tllength - ($(window).outerWidth() / 1.5));
 
+
+    for(var i = 0; i < timeline.length; i++){
+        var date = new Date(timeline[i]['date']);
+        var pos = Date.parse(date) - origin;
+        pos = Math.floor((pos / 10000000) / 2);
+        pos = (pos / tllength) * 100;
+        console.log(origin,date,pos);
+        var html = '<div class="content"><h2>' + timeline[i]['title'] + '</h2>' + timeline[i]['content'] + '</div>';
+        $('<div/>').addClass('tlitem').css('left',pos + '%').html(html).appendTo($tl);
+    }
+
+    //initiate smooth scroller plugin for mouse/touch
+    $("#timeline").smoothTouchScroll({
+        startAtElementId:'starthere'
+    });
+    
+    $('body').on('click',function(){
+        $('.tlitem').removeClass('active');
+    });
+    
+    $('.tlitem').on('click',function(e){
+        e.stopPropagation();
+        $('.tlitem').removeClass('active');
+        $(this).addClass('active');
+    });
 });

@@ -25,7 +25,7 @@ var transitionEvent = whichTransitionEvent();
 
 
 //global variables
-var orig = new Date("Jun 29 08:01:00 +0000 2015");
+var orig = new Date("Jul 1 09:48:00 +0000 2015");
 var $time = $('#time');
 var time = {'year':'00','month':'00','day':'00','hour':'00','minute':'00','second':'00'};
 var prevtime = {'year':'00','month':'00','day':'00','hour':'00','minute':'00','second':'00'};

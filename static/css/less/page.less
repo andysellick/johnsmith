@@ -260,13 +260,15 @@
             */
 
             .tlitem {
+                z-index:1;
                 position:absolute;
                 top:100%;
                 width:400px;
                 margin-left:-200px;
                 margin-top:5px;
+                height:0; //to kill the overflow problem without needing overflow
 
-                &:before {
+                &:before { //this is the button to click on to show the item
                     content:"";
                     position:absolute;
                     bottom:100%;
@@ -279,9 +281,27 @@
                     .border-radius( 50px );
                     cursor:pointer;
                 }
-                &:hover {
-                    &:after {
-                        background:yellow;
+
+                .date {
+                    position:absolute;
+                    left:25%;
+                    bottom:100%;
+                    width:50%;
+                    margin-bottom:60px;
+                    background:silver;
+                    text-align:center;
+                    .transition( all 0.5s );
+
+                    &:before {
+                        content:"";
+                        position:absolute;
+                        top:100%;
+                        left:50%;
+                        margin-left:-10px;
+                        border-style:solid;
+                        border-width:10px;
+                        border-color:silver transparent transparent transparent;
+                        .transition( all 0.5s );
                     }
                 }
 
@@ -304,9 +324,29 @@
                 }
 
                 &.active {
+                    z-index:10;
+                    height:auto;
                     .content {
                         visibility:visible;
                         .transparency( 1 );
+                    }
+                    .date {
+                        background:gray;
+                        &:before {
+                            border-top-color:gray;
+                        }
+                    }
+                }
+                &:hover {
+                    z-index:10;
+                    &:before {
+                        background:yellow;
+                    }
+                    .date {
+                        background:gray;
+                        &:before {
+                            border-top-color:gray;
+                        }
                     }
                 }
 

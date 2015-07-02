@@ -31,6 +31,7 @@ var limits = {'year':10000,'month':11,'day':366,'hour':23,'minute':59,'second':5
 var currentscale = 0;
 var timer;
 
+
 var timeline = [
     {
         'date':"Jan 1 00:00:00 +0000 2014",
@@ -40,6 +41,16 @@ var timeline = [
     {
         'date':"Feb 1 00:00:00 +0000 2014",
         'title':'This is another test item',
+        'content':'<p>This is the content of the test item.</p><p>It might contain a number of paragraphs.</p><p>And what if it does, and that causes a huge space problem?</p><p>Well maybe I have been clever and fixed it. What do you think of that, eh?</p>'
+    },
+    {
+        'date':"Apr 1 00:00:00 +0000 2014",
+        'title':'Boomtown',
+        'content':'<p>This is the content of the test item.</p><p>It might contain a number of paragraphs.</p><p>And what if it does, and that causes a huge space problem?</p>'
+    },
+    {
+        'date':"Jul 1 00:00:00 +0000 2014",
+        'title':'Boomtown',
         'content':'<p>This is the content of the test item.</p><p>It might contain a number of paragraphs.</p><p>And what if it does, and that causes a huge space problem?</p><p>Well maybe I have been clever and fixed it. What do you think of that, eh?</p>'
     },
     {
@@ -56,6 +67,9 @@ var timeline = [
 
 (function( window, undefined ) {
 var lenny = {
+    $tl: 0, //the timeline element
+    tllength: 0,
+
     general: {
         //store time for comparison next time round, since it's an object can't do a direct copy
         backupTime: function(){
@@ -128,7 +142,38 @@ var lenny = {
         }
     },
     timeline: {
+        //do the timeline
+        createTimeline: function(){
+            lenny.$tl = $('#timelinecontent');
+            var origin = Date.parse(orig);
+            lenny.tllength = Date.now() - origin; //base the length of the timeline on the time difference
+            lenny.tllength = lenny.timeline.rescaleTimeline(lenny.tllength); // Math.floor((tllength / 10000000) / 2);
+            lenny.timeline.setTimeLinePos(lenny.tllength - ($(window).outerWidth() / 1.5) + 500); //timeline has a margin left of 500px, need to include this
+            lenny.$tl.css('width', lenny.tllength + 'px');
 
+            for(var i = 0; i < timeline.length; i++){
+                var date = new Date(timeline[i]['date']);
+                var pos = Date.parse(date) - origin;
+                pos = lenny.timeline.rescaleTimeline(pos); //Math.floor((pos / 10000000) / 2);
+                pos = (pos / lenny.tllength) * 100;
+                var humandate = timeline[i]['date'];
+                humandate = humandate.split(' ');
+                humandate = humandate[0] + ' ' + humandate[1] + ', ' + humandate[4];
+                var html = '<div class="date">' + humandate + '</div><div class="content"><h2>' + timeline[i]['title'] + '</h2>' + timeline[i]['content'] + '</div>';
+                $('<div/>').addClass('tlitem').css('left',pos + '%').html(html).appendTo(lenny.$tl);
+            }
+        },
+        setTimeLinePos: function(position){
+            //this code positions the 'view' to the far right of the timeline
+            //due to a quirk of how the plugin works, this only works on elements that are floated left. It won't work on absolutely positioned elements or elements with an offset using a margin
+            //SO! to position the viewport we have two DIVs in the markup with zero height and floated left. The first is given the width of how far along the view we want to start at,
+            //and the second is the startAtElementId element used to initialise the plugin below. A bit hacky but it's the only way I can get it to work and still allow the user to scroll back in time
+            $('#buffer').css('width',position);
+        },
+        //adjusts numbers to provide a more sensible scale for the timeline
+        rescaleTimeline: function(num){
+            return(Math.floor((num / 10000000) / 2));
+        }
     }
 
 };
@@ -171,31 +216,8 @@ $(function() {
             }
         },0);
     });
-
-    //do the timeline
-    var $tl = $('#timelinecontent');
-    var origin = Date.parse(orig)
-    var tllength = Date.now() - origin; //base the length of the timeline on the time difference
-    tllength = Math.floor((tllength / 10000000) / 2);
-    $tl.css('width', tllength + 'px');
-
-    //this code positions the 'view' to the far right of the timeline
-    //due to a quirk of how the plugin works, this only works on elements that are floated left. It won't work on absolutely positioned elements or elements with an offset using a margin
-    //SO! to position the viewport we have two DIVs in the markup with zero height and floated left. The first is given the width of how far along the view we want to start at,
-    //and the second is the startAtElementId element used to initialise the plugin below. A bit hacky but it's the only way I can get it to work and still allow the user to scroll back in time
-    $('#buffer').css('width',tllength - ($(window).outerWidth() / 1.5));
-
-    for(var i = 0; i < timeline.length; i++){
-        var date = new Date(timeline[i]['date']);
-        var pos = Date.parse(date) - origin;
-        pos = Math.floor((pos / 10000000) / 2);
-        pos = (pos / tllength) * 100;
-        var humandate = timeline[i]['date'];
-        humandate = humandate.split(' ');
-        humandate = humandate[0] + ' ' + humandate[1] + ', ' + humandate[4];
-        var html = '<div class="date">' + humandate + '</div><div class="content"><h2>' + timeline[i]['title'] + '</h2>' + timeline[i]['content'] + '</div>';
-        $('<div/>').addClass('tlitem').css('left',pos + '%').html(html).appendTo($tl);
-    }
+    
+    lenny.timeline.createTimeline();
 
     //initiate smooth scroller plugin for mouse/touch
     $("#timeline").smoothTouchScroll({
@@ -204,7 +226,7 @@ $(function() {
     
     $('body').on('click',function(){
         $('.tlitem').removeClass('active');
-        $tl.css('margin-bottom','50px'); //slightly cheating trick to get around the need for overflow:hidden on the timeline
+        lenny.$tl.css('margin-bottom','50px'); //slightly cheating trick to get around the need for overflow:hidden on the timeline
     });
 
     $('.tlitem').on('click',function(e){
@@ -212,6 +234,75 @@ $(function() {
         $('.tlitem').removeClass('active');
         $(this).addClass('active');
         var h = $(this).find('.content').outerHeight() + 20; //slightly cheating trick to get around the need for overflow:hidden on the timeline
-        $tl.css('margin-bottom',h);
+        lenny.$tl.css('margin-bottom',h);
     });
+    
+    //take the timeline right back to the beginning
+    $('#resetstart').on('click',function(e){
+        e.preventDefault();
+        lenny.timeline.setTimeLinePos(0);
+        $("#timeline").smoothTouchScroll();
+    });
+
+    //send the timeline right to the end
+    $('#resetnow').on('click',function(e){
+        e.preventDefault();
+        lenny.timeline.setTimeLinePos(lenny.tllength - ($(window).outerWidth() / 1.5) + 500); //timeline has a margin left of 500px, need to include this
+        $("#timeline").smoothTouchScroll();
+    });
+
+    //find the first item that is just off the left of the timeline
+    $('#prev').on('click',function(e){
+        e.preventDefault();
+        var compareto = $("#timeline").offset();
+        compareto = compareto.left;
+        var thisone;
+        lenny.$tl.find('.tlitem').each(function(){
+            var thispos = $(this).offset();
+            if(thispos.left >= compareto){
+                if($(this).is(':first-child')){
+                    thisone = $(this);
+                }
+                else {
+                    thisone = $(this).prev();
+                }
+                return false;
+            }
+        });
+        if(!thisone){
+            thisone = lenny.$tl.find('.tlitem').last();
+        }
+        var pos = thisone.position();
+        pos = pos.left - 200 + 500; //timeline has a margin left of 500px, need to include this
+        lenny.timeline.setTimeLinePos(pos);
+        $("#timeline").smoothTouchScroll();
+    });
+
+    //find the first item that is just off the right of the timeline
+    $('#next').on('click',function(e){
+        e.preventDefault();
+        var compareto = $("#timeline").offset();
+        compareto = compareto.left + $('#timeline').outerWidth();
+        var thisone;
+        lenny.$tl.find('.tlitem').each(function(){
+            var thispos = $(this).offset();
+            if(thispos.left > compareto){
+                thisone = $(this);
+                return false;
+            }
+        });
+        if(!thisone){
+            thisone = lenny.$tl.find('.tlitem').last();
+        }
+        var pos = thisone.position();
+        pos = pos.left - 200 + 500; //timeline has a margin left of 500px, need to include this
+        lenny.timeline.setTimeLinePos(pos);
+        $("#timeline").smoothTouchScroll();
+    });
+    
+    $(window).on('resize',function(){
+        lenny.timeline.setTimeLinePos(lenny.tllength - ($(window).outerWidth() / 1.5) + 500); //timeline has a margin left of 500px, need to include this
+        $("#timeline").smoothTouchScroll();
+    });
+
 });

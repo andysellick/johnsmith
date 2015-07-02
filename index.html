@@ -21,71 +21,78 @@
 </head>
 
 <body>
-    <div class="container align-center">
-        <div id="time" class="timewrap">
-            <div class="timeunit" data-name="year"> <!-- data-next attribute contains the current number plus 1 -->
-                <div class="digit">
-                    <div class="digits">
-                        <span class="number"></span> <!-- contains the current number -->
+    <main class="main">
+        <div class="container align-center">
+            <div id="time" class="timewrap">
+                <div class="timeunit" data-name="year"> <!-- data-next attribute contains the current number plus 1 -->
+                    <div class="digit">
+                        <div class="digits">
+                            <span class="number"></span> <!-- contains the current number -->
+                        </div>
                     </div>
+                    <div class="units"></div>
                 </div>
-                <div class="units"></div>
-            </div>
-            <div class="timeunit" data-name="month">
-                <div class="digit">
-                    <div class="digits">
-                        <span class="number"></span>
+                <div class="timeunit" data-name="month">
+                    <div class="digit">
+                        <div class="digits">
+                            <span class="number"></span>
+                        </div>
                     </div>
+                    <div class="units"></div>
                 </div>
-                <div class="units"></div>
-            </div>
-            <div class="timeunit" data-name="day">
-                <div class="digit">
-                    <div class="digits">
-                        <span class="number"></span>
+                <div class="timeunit" data-name="day">
+                    <div class="digit">
+                        <div class="digits">
+                            <span class="number"></span>
+                        </div>
                     </div>
+                    <div class="units"></div>
                 </div>
-                <div class="units"></div>
-            </div>
-            <div class="timeunit" data-name="hour">
-                <div class="digit">
-                    <div class="digits">
-                        <span class="number"></span>
+                <div class="timeunit" data-name="hour">
+                    <div class="digit">
+                        <div class="digits">
+                            <span class="number"></span>
+                        </div>
                     </div>
+                    <div class="units"></div>
                 </div>
-                <div class="units"></div>
-            </div>
-            <div class="timeunit" data-name="minute">
-                <div class="digit">
-                    <div class="digits">
-                        <span class="number"></span>
+                <div class="timeunit" data-name="minute">
+                    <div class="digit">
+                        <div class="digits">
+                            <span class="number"></span>
+                        </div>
                     </div>
+                    <div class="units"></div>
                 </div>
-                <div class="units"></div>
-            </div>
-            <div class="timeunit" data-name="second">
-                <div class="digit">
-                    <div class="digits">
-                        <span class="number"></span>
+                <div class="timeunit" data-name="second">
+                    <div class="digit">
+                        <div class="digits">
+                            <span class="number"></span>
+                        </div>
                     </div>
+                    <div class="units"></div>
                 </div>
-                <div class="units"></div>
             </div>
+            <div id="trigger" class="trigger"></div>
         </div>
-        <div id="trigger" class="trigger"></div>
+        
+        <a href="#" id="resetstart">Oldest</a>
+        <a href="#" id="resetnow">Newest</a>
+        
+        <a href="#" id="prev">&lt;</a>
+        <a href="#" id="next">&gt;</a>
+    
+        <div id="timeline" class="tlwrap">
+            <div id="buffer" class="buffer"></div>
+            <div id="starthere" class="buffer"></div>
+            <div id="timelinecontent" class="tl"></div>
+        </div>
+    </main>
+    
+    <div class="nojswarn align-center">
+        <span class="faux_h3">This site requires JavaScript. You do not have JavaScript enabled. You have to turn it on to make this site work. Otherwise it won't work. Because it needs JavaScript.</span>
     </div>
-    
-    <a href="#" id="resetstart">Oldest</a>
-    <a href="#" id="resetnow">Newest</a>
-    
-    <a href="#" id="prev">&lt;</a>
-    <a href="#" id="next">&gt;</a>
 
-    <div id="timeline" class="tlwrap">
-        <div id="buffer" class="buffer"></div>
-        <div id="starthere" class="buffer"></div>
-        <div id="timelinecontent" class="tl"></div>
-    </div>
 
     <script src="static/js/vendor/jquery-1.10.2.min.js"></script>
 

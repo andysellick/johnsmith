@@ -31,40 +31,48 @@ var limits = {'year':10000,'month':11,'day':366,'hour':23,'minute':59,'second':5
 var currentscale = 0;
 var timer;
 
+//other, education, job, first, travel, fun
 
 var timeline = [
     {
         'date':"Jan 1 00:00:00 +0000 2014",
+        'type':'other',
         'title':'This is a test item',
         'content':'<p>This is the content of the test item.</p><p>It might contain a number of paragraphs.</p>'
     },
     {
         'date':"Feb 1 00:00:00 +0000 2014",
+        'type':'education',
         'title':'This is another test item',
         'content':'<p>This is the content of the test item.</p><p>It might contain a number of paragraphs.</p><p>And what if it does, and that causes a huge space problem?</p><p>Well maybe I have been clever and fixed it. What do you think of that, eh?</p>'
     },
     {
         'date':"Apr 1 00:00:00 +0000 2014",
+        'type':'job',
         'title':'Boomtown',
         'content':'<p>This is the content of the test item.</p><p>It might contain a number of paragraphs.</p><p>And what if it does, and that causes a huge space problem?</p>'
     },
     {
         'date':"Jul 1 00:00:00 +0000 2014",
+        'type':'first',
         'title':'Boomtown',
-        'content':'<p>This is the content of the test item.</p><p>It might contain a number of paragraphs.</p><p>And what if it does, and that causes a huge space problem?</p><p>Well maybe I have been clever and fixed it. What do you think of that, eh?</p>'
+        'content':'<p>This is the content of the test item.</p>'
     },
     {
         'date':"Mar 1 00:00:00 +0000 2015",
+        'type':'travel',
         'title':'This is another test item',
         'content':'<p>This is the content of the test item.</p><p>It might contain a number of paragraphs.</p>'
     },
     {
         'date':"Mar 3 00:00:00 +0000 2015",
+        'type':'fun',
         'title':'This is another test item',
         'content':'<p>This is the content of the test item.</p><p>It might contain a number of paragraphs.</p>'
     },
     {
         'date':"Jul 1 00:00:00 +0000 2015",
+        'type':'fun',
         'title':'hello',
         'content':'<p>This is the content of the test item.</p><p>It might contain a number of paragraphs.</p>'
     }
@@ -178,8 +186,9 @@ var lenny = {
                 var humandate = timeline[i]['date'];
                 humandate = humandate.split(' ');
                 humandate = humandate[0] + ' ' + humandate[1] + ', ' + humandate[4];
+                var classification = timeline[i]['type']
                 var html = '<div class="date">' + humandate + '</div><div class="content"><h2>' + timeline[i]['title'] + '</h2>' + timeline[i]['content'] + '</div>';
-                $('<div/>').addClass('tlitem').css('left',pos + '%').html(html).appendTo(lenny.$tl);
+                $('<div/>').addClass('tlitem type-' + classification).css('left',pos + '%').html(html).appendTo(lenny.$tl);
             }
             lenny.tlitemcount = lenny.$tl.find('.tlitem').length;
             lenny.tlselected = lenny.tlitemcount;

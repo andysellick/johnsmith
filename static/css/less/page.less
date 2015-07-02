@@ -269,20 +269,45 @@
                 margin-left:-200px;
                 margin-top:5px;
                 height:0; //to kill the overflow problem without needing overflow
-
+                
                 &:before { //this is the button to click on to show the item
                     content:"";
                     position:absolute;
                     bottom:100%;
                     left:50%;
-                    width:20px;
-                    height:20px;
-                    margin-left:-10px;
+                    width:30px;
+                    height:30px;
+                    margin-left:-15px;
                     margin-bottom:15px;
-                    background:blue;
+                    background:silver;
                     .border-radius( 50px );
+                    border:solid gray 1px;
                     cursor:pointer;
+                    font-family:'icomoon';
+                    text-align:center;
+                    line-height:30px;
                 }
+                
+                //current icons
+                &.type-other:before {
+                    content:"\ea09";
+                }
+                &.type-education:before {
+                    content:"\e920";
+                }
+                &.type-job:before {
+                    content:"\e976";
+                }
+                &.type-first:before {
+                    content:"\e91e";
+                }
+                &.type-travel:before {
+                    content:"\e9af";
+                }
+                &.type-fun:before {
+                    content:"\e916";
+                }
+
 
                 .date {
                     position:absolute;
@@ -342,11 +367,16 @@
                             border-top-color:gray;
                         }
                     }
+                    &:before {
+                        background:gray;
+                        .box-shadow( 0 0 2px 2px silver );
+                    }
                 }
                 &:hover {
                     z-index:10;
                     &:before {
-                        background:yellow;
+                        background:gray;
+                        .box-shadow( 0 0 2px 2px silver );
                     }
                     .date {
                         background:gray;

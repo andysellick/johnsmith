@@ -300,45 +300,47 @@ $(function() {
     $('#prev').on('click',function(e){
         e.preventDefault();
         e.stopPropagation();
-        var compareto = $("#timeline").offset();
-        compareto = compareto.left;
-
-        //if one is already open, open the previous one
-        //else if the timeline has been moved, open the previous one that is just off the screen
-        //else (if the timeline hasn't moved, we must be at the end, so open the last one)
-        var thisone = lenny.$tl.find('.tlitem.active');
-        if(thisone.length && thisone.index() > 0){
-            thisone = thisone.prev();
-        }
-        else if(lenny.tlselected != -1){
-            thisone = lenny.$tl.find('.tlitem').eq(lenny.tlselected - 1);
-        }
-        else {
-            lenny.$tl.find('.tlitem').each(function(){
-                var thispos = $(this).offset();
-                if(thispos.left >= compareto){
-                    if($(this).is(':first-child')){
-                        thisone = $(this);
+        if(lenny.tlselected != 0){
+            var compareto = $("#timeline").offset();
+            compareto = compareto.left;
+    
+            //if one is already open, open the previous one
+            //else if the timeline has been moved, open the previous one that is just off the screen
+            //else (if the timeline hasn't moved, we must be at the end, so open the last one)
+            var thisone = lenny.$tl.find('.tlitem.active');
+            if(thisone.length && thisone.index() > 0){
+                thisone = thisone.prev();
+            }
+            else if(lenny.tlselected != -1){
+                thisone = lenny.$tl.find('.tlitem').eq(lenny.tlselected - 1);
+            }
+            else {
+                lenny.$tl.find('.tlitem').each(function(){
+                    var thispos = $(this).offset();
+                    if(thispos.left >= compareto){
+                        if($(this).is(':first-child')){
+                            thisone = $(this);
+                        }
+                        else {
+                            thisone = $(this).prev();
+                        }
+                        return false;
                     }
-                    else {
-                        thisone = $(this).prev();
-                    }
-                    return false;
+                });
+                if(!thisone.length){
+                    thisone = lenny.$tl.find('.tlitem').last();
                 }
-            });
-            if(!thisone.length){
-                thisone = lenny.$tl.find('.tlitem').last();
             }
-        }
-        if(thisone.length){
-            var pos = thisone.offset();
-            if(pos.left < compareto){
-                pos = thisone.position();
-                pos = pos.left - lenny.tloffset + lenny.tlmarginleft; //timeline has a margin left of 500px, need to include this
-                lenny.timeline.setTimeLinePos(pos);
+            if(thisone.length){
+                var pos = thisone.offset();
+                if(pos.left < compareto){
+                    pos = thisone.position();
+                    pos = pos.left - lenny.tloffset + lenny.tlmarginleft; //timeline has a margin left of 500px, need to include this
+                    lenny.timeline.setTimeLinePos(pos);
+                }
+                $("#timeline").smoothTouchScroll();
+                thisone.trigger('click');
             }
-            $("#timeline").smoothTouchScroll();
-            thisone.trigger('click');
         }
     });
 
@@ -346,37 +348,39 @@ $(function() {
     $('#next').on('click',function(e){
         e.preventDefault();
         e.stopPropagation();
-        var compareto = $("#timeline").offset();
-        compareto = compareto.left + $('#timeline').outerWidth();
-
-        var thisone = lenny.$tl.find('.tlitem.active');
-        if(thisone.length && thisone.index() < lenny.tlitemcount){
-            thisone = thisone.next();
-        }
-        else if(lenny.tlselected != -1){
-            thisone = lenny.$tl.find('.tlitem').eq(lenny.tlselected);
-        }
-        else {
-            lenny.$tl.find('.tlitem').each(function(){
-                var thispos = $(this).offset();
-                if(thispos.left > compareto){
-                    thisone = $(this);
-                    return false;
+        if(lenny.tlselected <= lenny.tlitemcount){
+            var compareto = $("#timeline").offset();
+            compareto = compareto.left + $('#timeline').outerWidth();
+    
+            var thisone = lenny.$tl.find('.tlitem.active');
+            if(thisone.length && thisone.index() < lenny.tlitemcount){
+                thisone = thisone.next();
+            }
+            else if(lenny.tlselected != -1){
+                thisone = lenny.$tl.find('.tlitem').eq(lenny.tlselected);
+            }
+            else {
+                lenny.$tl.find('.tlitem').each(function(){
+                    var thispos = $(this).offset();
+                    if(thispos.left > compareto){
+                        thisone = $(this);
+                        return false;
+                    }
+                });
+                if(!thisone.length){
+                    thisone = lenny.$tl.find('.tlitem').last();
                 }
-            });
-            if(!thisone.length){
-                thisone = lenny.$tl.find('.tlitem').last();
             }
-        }
-        if(thisone.length){
-            var pos = thisone.offset();
-            if(pos.left + thisone.outerWidth() > compareto){
-                pos = thisone.position();
-                pos = pos.left - lenny.tloffset + lenny.tlmarginleft; //timeline has a margin left of 500px, need to include this
-                lenny.timeline.setTimeLinePos(pos);
+            if(thisone.length){
+                var pos = thisone.offset();
+                if(pos.left + thisone.outerWidth() > compareto){
+                    pos = thisone.position();
+                    pos = pos.left - lenny.tloffset + lenny.tlmarginleft; //timeline has a margin left of 500px, need to include this
+                    lenny.timeline.setTimeLinePos(pos);
+                }
+                $("#timeline").smoothTouchScroll();
+                thisone.trigger('click');
             }
-            $("#timeline").smoothTouchScroll();
-            thisone.trigger('click');
         }
     });
 

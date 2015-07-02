@@ -14,7 +14,7 @@
     @corner: 5px;
 
     .timewrap {
-        margin:50px 0;
+        margin:50px 0 0 0;
         .timeunit {
             display:none;
             padding:10px;
@@ -224,8 +224,9 @@
         	float: left;
         	clear:both;
             height:50px;
-            margin:50px 0 100px 0;
+            margin:100px 0;
             margin-left:500px;
+            .transition( margin 0.5s );
             background-color: gray;
             background-image: repeating-linear-gradient(45deg, transparent, transparent 35px, rgba(255,255,255,.5) 35px, rgba(255,255,255,.5) 70px);
             color:#FFFFFF;
@@ -364,6 +365,15 @@
         .buffer {
             float:left;
         }
+    }
+    
+    .controls {
+        position:fixed;
+        z-index:900;
+        top:0;
+        left:0;
+        padding:5px;
+        background:#FFFFFF;
     }
     
     .nojswarn {

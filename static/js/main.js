@@ -382,9 +382,10 @@ $(function() {
             }
             if(thisone.length){
                 var pos = thisone.offset();
-                if(pos.left + thisone.outerWidth() > compareto){
+                if(pos.left + thisone.outerWidth() > compareto){ //fixme this needs to be a more thorough check for mobile at 320px
                     pos = thisone.position();
                     pos = pos.left - lenny.tloffset + lenny.tlmarginleft; //timeline has a margin left of 500px, need to include this
+                    pos = pos - ($('#timeline').outerWidth() - thisone.outerWidth());
                     lenny.timeline.setTimeLinePos(pos);
                 }
                 $("#timeline").smoothTouchScroll();
@@ -395,6 +396,7 @@ $(function() {
 
     //if the screen is resized basically reset the timeline
     $(window).on('resize',function(){
+        console.log('resize');
         lenny.timeline.resize();
         lenny.timeline.setTimeLinePos(lenny.tllength - ($(window).outerWidth() / 1.5) + lenny.tlmarginleft); //timeline has a margin left of 500px, need to include this
         $("#timeline").smoothTouchScroll();

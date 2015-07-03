@@ -273,7 +273,7 @@ $(function() {
 
     $('html').on('click',function(){
         $('.tlitem').removeClass('active');
-        lenny.$tl.css('margin-bottom','50px'); //slightly cheating trick to get around the need for overflow:hidden on the timeline
+        lenny.$tl.css('margin-bottom','100px'); //slightly cheating trick to get around the need for overflow:hidden on the timeline
     });
 
     $('.tlitem').on('click',function(e){

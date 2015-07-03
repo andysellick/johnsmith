@@ -33,6 +33,7 @@ var timer;
 
 //other, education, job, first, travel, fun
 
+//fixme this has to be sorted
 var timeline = [
     {
         'date':"Jan 1 00:00:00 +0000 2014",
@@ -71,10 +72,10 @@ var timeline = [
         'content':'<p>This is the content of the test item.</p><p>It might contain a number of paragraphs.</p>'
     },
     {
-        'date':"Jul 1 00:00:00 +0000 2015",
+        'date':"Apr 1 00:00:00 +0000 2015",
         'type':'fun',
         'title':'hello',
-        'content':'<p>This is the content of the test item.</p><p>It might contain a number of paragraphs.</p>'
+        'content':'<p>This is the content of the test item which I have made long in this instance to test some styles.</p><p>It might contain a number of paragraphs.</p>'
     }
 ];
 

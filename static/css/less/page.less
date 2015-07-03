@@ -226,47 +226,48 @@
             height:50px;
             margin:100px 0;
             margin-left:500px;
-            .transition( margin 0.5s );
-            background-color: gray;
-            background-image: repeating-linear-gradient(45deg, transparent, transparent 35px, rgba(255,255,255,.5) 35px, rgba(255,255,255,.5) 70px);
+            .transition( all 0.5s );
+            background-color: #219bad;
+            //background-image: repeating-linear-gradient(45deg, transparent, transparent 35px, rgba(255,255,255,.5) 35px, rgba(255,255,255,.5) 70px);
+            background-image: repeating-linear-gradient(-45deg, transparent, transparent 35px, rgba(255,255,255,.3) 35px, rgba(255,255,255,.3) 70px);
+            .box-shadow( ~"0 -4px 7px rgba(18,86,96,0.8) inset, 0 4px 7px rgba(255,255,255,0.8) inset" );
             color:#FFFFFF;
             
-            &:after {
-                content:"";
-                position:absolute;
-                top:-25px;
-                right:-100px;
-                border-style:solid;
-                border-width:50px;
-                border-color:transparent transparent transparent gray;
+            &:hover {
+                background-color:#25afc4;
+                &:before,
+                &:after {
+                    background-color:#25afc4;
+                }
             }
 
-            /* was a more complex arrowhead but doesn't look great
             &:before,
             &:after {
                 content:"";
                 position:absolute;
-                top:-20px;
-                right:-50px;
-                width:130px;
-                height:60%;
-                background:gray;
-                .border-radius( 0 20px 20px 0 );
-                .transform( rotate(25deg) );
+                top:-25px;
+                right:-5px;
+                width:50px;
+                height:100%;
+                background-color:#219bad;
+                .transform( skewX(45deg) );
+                .box-shadow( ~"-4px 2px 3px rgba(18,86,96,0.5), 0 8px 7px -5px rgba(255,255,255,0.8) inset" );
+                .transition( all 0.5s );
             }
             &:after {
                 top:auto;
-                bottom:-20px;
-                .transform( rotate(-25deg) );
+                bottom:-25px;
+                .transform( skewX(-45deg) );
+                .box-shadow( ~"-4px 2px 3px rgba(18,86,96,0.5), 0 -8px 7px -5px rgba(18,86,96,0.8) inset" );
             }
-            */
+
 
             .tlitem {
                 z-index:1;
                 position:absolute;
                 top:100%;
-                width:400px;
-                margin-left:-200px;
+                width:500px;
+                margin-left:-250px;
                 margin-top:5px;
                 height:0; //to kill the overflow problem without needing overflow
                 
@@ -279,9 +280,10 @@
                     height:30px;
                     margin-left:-15px;
                     margin-bottom:15px;
-                    background:silver;
+                    background:#941c1c;
                     .border-radius( 50px );
-                    border:solid gray 1px;
+                    .box-shadow( ~"0 2px 2px rgba(0, 0, 0, 1) inset, 0 0 0 3px #219bad" );
+                    .transition( all 0.5s );
                     cursor:pointer;
                     font-family:'icomoon';
                     text-align:center;
@@ -311,19 +313,25 @@
 
                 .date {
                     position:absolute;
-                    left:25%;
+                    left:40%;
                     bottom:100%;
-                    width:50%;
+                    width:20%;
                     margin-bottom:60px;
                     padding:0.5em;
                     .border-box();
-                    background:silver;
+                    background:#8a3815;
+                    .vertical-gradient( #8a3815, 0%, #6f2d11, 100% );
                     text-align:center;
-                    .transition( all 0.5s );
-                    font-size:90%;
+                    .transition( all 0.3s );
+                    .border-radius( 5px );
+                    .box-shadow( ~"0 1px 0 rgba(255, 255, 255, 0.6) inset, 0 -1px 0 rgba(0, 0, 0, 0.6) inset" );
+                    border:solid 1px #57230d;
+                    border-top-color:#8a3815;
+                    font-size:80%;
                     cursor:pointer;
 
-                    &:before {
+                    &:before,
+                    &:after {
                         content:"";
                         position:absolute;
                         top:100%;
@@ -331,18 +339,36 @@
                         margin-left:-10px;
                         border-style:solid;
                         border-width:10px;
-                        border-color:silver transparent transparent transparent;
-                        .transition( all 0.5s );
+                        border-color:#311408 transparent transparent transparent;
+                    }
+                    &:after {
+                        margin-top:-1px;
+                        border-top-color:#702e11;
                     }
                 }
 
                 .content {
                     padding:10px;
-                    background:gray;
+                    padding-left:50px;
+                    .border-radius( 5px );
                     visibility:hidden;
                     .transparency( 0 );
                     .transition( all 0.5s );
-                    &:before {
+                    .box-shadow( 0 4px 4px rgba(0,0,0,0.5) );
+                    background-color: #fff; 
+                    background-image:
+                    linear-gradient(90deg, transparent 39px, #abced4 39px, #abced4 41px, transparent 41px),
+                    linear-gradient(#eee .1em, transparent .1em);
+                    background-size: 100% 1.5em;
+                    background-position:0 1em;
+                    color:#333333;
+                    border:solid 1px #adadad;
+                    font-family:Georgia, serif;
+                    cursor:default;
+
+
+                    &:before,
+                    &:after {
                         content:"";
                         position:absolute;
                         bottom:100%;
@@ -350,44 +376,42 @@
                         margin-left:-10px;
                         border-style:solid;
                         border-width:10px;
-                        border-color:transparent transparent gray transparent;
+                        border-color:transparent transparent #adadad transparent;
+                    }
+                    &:after {
+                        margin-bottom:-1px;
+                        border-color:transparent transparent #ffffff transparent;
                     }
                 }
 
-                &.active {
+                &.active,
+                &:hover {
                     z-index:10;
+                    .date {
+                        .vertical-gradient( #b64a1b, 0%, #8a3815, 100% );
+                        &:before {
+                            border-top-color:#57230d;
+                        }
+                        &:after {
+                            border-top-color:#8b3815;
+                        }
+                    }
+                }
+                &.active {
                     height:auto;
+                    .date {
+                        width:30%;
+                        left:(100% - 30%) / 2;
+                        font-size:110%;
+                    }
                     .content {
                         visibility:visible;
                         .transparency( 1 );
                     }
-                    .date {
-                        background:gray;
-                        font-size:100%;
-                        &:before {
-                            border-top-color:gray;
-                        }
-                    }
                     &:before {
-                        background:gray;
-                        .box-shadow( 0 0 2px 2px silver );
+                        .box-shadow( ~"0 2px 2px rgba(255,255,255, 0.5) inset, 0 -2px 2px rgba(0,0,0,1) inset, 0 0 0 3px #219bad" );
                     }
                 }
-                &:hover {
-                    z-index:10;
-                    &:before {
-                        background:gray;
-                        .box-shadow( 0 0 2px 2px silver );
-                    }
-                    .date {
-                        background:gray;
-                        font-size:100%;
-                        &:before {
-                            border-top-color:gray;
-                        }
-                    }
-                }
-
             }
         }
         .scrollWrapper {

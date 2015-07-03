@@ -2,9 +2,13 @@
     /* this file should contain html and body styles, and any other styles that relate to the general wrapping of every page e.g. a pagewrapping element */
 
     html {
+        height:100%;
+        .vertical-multi-gradient( #FFFFFF, 0px, #c1f7ff, 430px, #c1ffc2, 431px, #90be91, 100% );
+        background-attachment:fixed;
     }
 
     body {
+        //height:100%;
         font-family:Arial, Verdana, sans-serif;
         font-size: 100%;
         color:#333333;
@@ -14,7 +18,7 @@
     @corner: 5px;
 
     .timewrap {
-        margin:50px 0 0 0;
+        padding:60px 0 0 0;
         .timeunit {
             display:none;
             padding:10px;
@@ -218,7 +222,6 @@
     }
     
     .tlwrap {
-        height:100px;
         .tl {
             position:relative;
         	float: left;
@@ -227,8 +230,8 @@
             margin:100px 0;
             margin-left:500px;
             .transition( all 0.5s );
+            .border-radius( 10px 0 0 10px );
             background-color: #219bad;
-            //background-image: repeating-linear-gradient(45deg, transparent, transparent 35px, rgba(255,255,255,.5) 35px, rgba(255,255,255,.5) 70px);
             background-image: repeating-linear-gradient(-45deg, transparent, transparent 35px, rgba(255,255,255,.3) 35px, rgba(255,255,255,.3) 70px);
             .box-shadow( ~"0 -4px 7px rgba(18,86,96,0.8) inset, 0 4px 7px rgba(255,255,255,0.8) inset" );
             color:#FFFFFF;
@@ -270,6 +273,7 @@
                 margin-left:-250px;
                 margin-top:5px;
                 height:0; //to kill the overflow problem without needing overflow
+                .border-box();
                 
                 &:before { //this is the button to click on to show the item
                     content:"";
@@ -329,6 +333,7 @@
                     border-top-color:#8a3815;
                     font-size:80%;
                     cursor:pointer;
+                    text-shadow:0 1px 0 rgba(0,0,0,0.7);
 
                     &:before,
                     &:after {
@@ -426,16 +431,31 @@
         position:fixed;
         z-index:900;
         top:0;
-        left:0;
-        padding:5px;
-        background:#FFFFFF;
-        font-size:200%;
+        left:50%;
+        width:200px;
+        margin-left:-100px;
+        padding:5px 0;
+        font-size:220%;
+        text-align:center;
+
+
+        background:#8a3815;
+        .vertical-gradient( #8a3815, 0%, #6f2d11, 100% );
+        .border-radius( 0 0 30px 30px );
+        .box-shadow( ~"0 -1px 0 rgba(0, 0, 0, 0.6) inset" );
+        border:solid 1px #57230d;
+        border-top:0;
+        text-shadow:0 2px 0 rgba(0,0,0,0.7);
+
+
         a {
-            color:#000000;
+            color:#b6785d;
             text-decoration:none;
-            &:hover {
+            &:hover,
+            &:focus {
                 text-decoration:none;
-                color:gray;
+                color:#FFFFFF;
+                //text-shadow:none;
             }
         }
     }

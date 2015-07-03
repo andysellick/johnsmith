@@ -66,6 +66,12 @@ var timeline = [
         'content':'<p>This is the content of the test item.</p><p>It might contain a number of paragraphs.</p>'
     },
     {
+        'date':"Mar 2 00:00:00 +0000 2015",
+        'type':'fun',
+        'title':'This is another test item',
+        'content':'<p>This is the content of the test item.</p><p>It might contain a number of paragraphs.</p>'
+    },
+    {
         'date':"Mar 3 00:00:00 +0000 2015",
         'type':'fun',
         'title':'This is another test item',
@@ -73,6 +79,12 @@ var timeline = [
     },
     {
         'date':"Apr 1 00:00:00 +0000 2015",
+        'type':'fun',
+        'title':'hello',
+        'content':'<p>This is the content of the test item which I have made long in this instance to test some styles.</p><p>It might contain a number of paragraphs.</p><p>It might contain a number of paragraphs.</p><p>It might contain a number of paragraphs.</p><p>It might contain a number of paragraphs.</p><p>It might contain a number of paragraphs.</p><p>It might contain a number of paragraphs.</p><p>It might contain a number of paragraphs.</p><p>It might contain a number of paragraphs.</p><p>It might contain a number of paragraphs.</p><p>It might contain a number of paragraphs.</p><p>It might contain a number of paragraphs.</p><p>It might contain a number of paragraphs.</p><p>It might contain a number of paragraphs.</p><p>It might contain a number of paragraphs.</p><p>It might contain a number of paragraphs.</p><p>It might contain a number of paragraphs.</p><p>It might contain a number of paragraphs.</p><p>It might contain a number of paragraphs.</p><p>It might contain a number of paragraphs.</p><p>It might contain a number of paragraphs.</p><p>It might contain a number of paragraphs.</p><p>It might contain a number of paragraphs.</p>'
+    },
+    {
+        'date':"Sep 1 00:00:00 +0000 2015",
         'type':'fun',
         'title':'hello',
         'content':'<p>This is the content of the test item which I have made long in this instance to test some styles.</p><p>It might contain a number of paragraphs.</p>'
@@ -175,21 +187,23 @@ var lenny = {
         createTimeline: function(){
             var origin = Date.parse(orig);
             lenny.tllength = Date.now() - origin; //base the length of the timeline on the time difference
-            lenny.tllength = lenny.timeline.rescaleTimeline(lenny.tllength); // Math.floor((tllength / 10000000) / 2);
+            lenny.tllength = lenny.timeline.rescaleTimeline(lenny.tllength);
             lenny.timeline.setTimeLinePos(lenny.tllength - ($(window).outerWidth() / 1.5) + lenny.tlmarginleft); //timeline has a margin left of 500px, need to include this
             lenny.$tl.css('width', lenny.tllength + 'px');
 
             for(var i = 0; i < timeline.length; i++){
                 var date = new Date(timeline[i]['date']);
                 var pos = Date.parse(date) - origin;
-                pos = lenny.timeline.rescaleTimeline(pos); //Math.floor((pos / 10000000) / 2);
+                pos = lenny.timeline.rescaleTimeline(pos);
                 pos = (pos / lenny.tllength) * 100;
-                var humandate = timeline[i]['date'];
-                humandate = humandate.split(' ');
-                humandate = humandate[0] + ' ' + humandate[1] + ', ' + humandate[4];
-                var classification = timeline[i]['type']
-                var html = '<div class="date">' + humandate + '</div><div class="content"><h2>' + timeline[i]['title'] + '</h2>' + timeline[i]['content'] + '</div>';
-                $('<div/>').addClass('tlitem type-' + classification).css('left',pos + '%').html(html).appendTo(lenny.$tl);
+                if(pos <= 100){ //only show items from the past
+                    var humandate = timeline[i]['date'];
+                    humandate = humandate.split(' ');
+                    humandate = humandate[0] + ' ' + humandate[1] + ', ' + humandate[4];
+                    var classification = timeline[i]['type']
+                    var html = '<div class="date">' + humandate + '</div><div class="content"><h2>' + timeline[i]['title'] + '</h2>' + timeline[i]['content'] + '</div>';
+                    $('<div/>').addClass('tlitem type-' + classification).css('left',pos + '%').html(html).appendTo(lenny.$tl);
+                }
             }
             lenny.tlitemcount = lenny.$tl.find('.tlitem').length;
             lenny.tlselected = lenny.tlitemcount;
@@ -395,12 +409,16 @@ $(function() {
         }
     });
 
+    var resize;
+
     //if the screen is resized basically reset the timeline
     $(window).on('resize',function(){
-        console.log('resize');
-        lenny.timeline.resize();
-        lenny.timeline.setTimeLinePos(lenny.tllength - ($(window).outerWidth() / 1.5) + lenny.tlmarginleft); //timeline has a margin left of 500px, need to include this
-        $("#timeline").smoothTouchScroll();
+        clearTimeout(resize); //don't resize immediately
+        resize = setTimeout(function(){
+            lenny.timeline.resize();
+            lenny.timeline.setTimeLinePos(lenny.tllength - ($(window).outerWidth() / 1.5) + lenny.tlmarginleft); //timeline has a margin left of 500px, need to include this
+            $("#timeline").smoothTouchScroll();
+        },500);
     });
 
 });

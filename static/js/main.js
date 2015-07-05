@@ -39,55 +39,55 @@ var timeline = [
         'date':"Jan 1 00:00:00 +0000 2014",
         'type':'other',
         'title':'This is a test item',
-        'content':'<p>This is the content of the test item.</p><p>It might contain a number of paragraphs.</p>'
+        'content':'<p>This is the content of the test item.</p><p>It might contain a number of paragraphs.</p><p>test</p><p>test</p>'
     },
     {
         'date':"Feb 1 00:00:00 +0000 2014",
         'type':'education',
         'title':'This is another test item',
-        'content':'<p>This is the content of the test item.</p><p>It might contain a number of paragraphs.</p><p>And what if it does, and that causes a huge space problem?</p><p>Well maybe I have been clever and fixed it. What do you think of that, eh?</p>'
+        'content':'<p>This is the content of the test item.</p><p>It might contain a number of paragraphs.</p><p>And what if it does, and that causes a huge space problem?</p><p>Well maybe I have been clever and fixed it. What do you think of that, eh?</p><p>test</p><p>test</p>'
     },
     {
         'date':"Apr 1 00:00:00 +0000 2014",
         'type':'job',
         'title':'Boomtown',
-        'content':'<p>This is the content of the test item.</p><p>It might contain a number of paragraphs.</p><p>And what if it does, and that causes a huge space problem?</p>'
+        'content':'<p>This is the content of the test item.</p><p>It might contain a number of paragraphs.</p><p>And what if it does, and that causes a huge space problem?</p><p>test</p><p>test</p>'
     },
     {
         'date':"Jul 1 00:00:00 +0000 2014",
         'type':'first',
         'title':'Boomtown',
-        'content':'<p>This is the content of the test item.</p>'
+        'content':'<p>This is the content of the test item.</p><p>test</p><p>test</p>'
     },
     {
         'date':"Mar 1 00:00:00 +0000 2015",
         'type':'travel',
         'title':'This is another test item',
-        'content':'<p>This is the content of the test item.</p><p>It might contain a number of paragraphs.</p>'
+        'content':'<p>This is the content of the test item.</p><p>It might contain a number of paragraphs.</p><p>test</p><p>test</p>'
     },
     {
         'date':"Mar 2 00:00:00 +0000 2015",
         'type':'fun',
         'title':'This is another test item',
-        'content':'<p>This is the content of the test item.</p><p>It might contain a number of paragraphs.</p>'
+        'content':'<p>This is the content of the test item.</p><p>It might contain a number of paragraphs.</p><p>test</p><p>test</p>'
     },
     {
         'date':"Mar 3 00:00:00 +0000 2015",
         'type':'fun',
         'title':'This is another test item',
-        'content':'<p>This is the content of the test item.</p><p>It might contain a number of paragraphs.</p>'
+        'content':'<p>This is the content of the test item.</p><p>It might contain a number of paragraphs.</p><p>test</p><p>test</p>'
     },
     {
         'date':"Apr 1 00:00:00 +0000 2015",
         'type':'fun',
         'title':'hello',
-        'content':'<p>This is the content of the test item which I have made long in this instance to test some styles.</p><p>It might contain a number of paragraphs.</p><p>It might contain a number of paragraphs.</p><p>It might contain a number of paragraphs.</p><p>It might contain a number of paragraphs.</p><p>It might contain a number of paragraphs.</p><p>It might contain a number of paragraphs.</p><p>It might contain a number of paragraphs.</p><p>It might contain a number of paragraphs.</p><p>It might contain a number of paragraphs.</p><p>It might contain a number of paragraphs.</p><p>It might contain a number of paragraphs.</p><p>It might contain a number of paragraphs.</p><p>It might contain a number of paragraphs.</p><p>It might contain a number of paragraphs.</p><p>It might contain a number of paragraphs.</p><p>It might contain a number of paragraphs.</p><p>It might contain a number of paragraphs.</p><p>It might contain a number of paragraphs.</p><p>It might contain a number of paragraphs.</p><p>It might contain a number of paragraphs.</p><p>It might contain a number of paragraphs.</p><p>It might contain a number of paragraphs.</p>'
+        'content':'<p>This is the content of the test item which I have made long in this instance to test some styles.</p><p>It might contain a number of paragraphs.</p><p>It might contain a number of paragraphs.</p><p>It might contain a number of paragraphs.</p><p>It might contain a number of paragraphs.</p><p>It might contain a number of paragraphs.</p><p>It might contain a number of paragraphs.</p><p>It might contain a number of paragraphs.</p><p>It might contain a number of paragraphs.</p><p>It might contain a number of paragraphs.</p><p>It might contain a number of paragraphs.</p><p>It might contain a number of paragraphs.</p><p>It might contain a number of paragraphs.</p><p>It might contain a number of paragraphs.</p><p>It might contain a number of paragraphs.</p><p>It might contain a number of paragraphs.</p><p>It might contain a number of paragraphs.</p><p>It might contain a number of paragraphs.</p><p>It might contain a number of paragraphs.</p><p>It might contain a number of paragraphs.</p><p>It might contain a number of paragraphs.</p><p>It might contain a number of paragraphs.</p><p>It might contain a number of paragraphs.</p><p>test</p><p>test</p>'
     },
     {
         'date':"Sep 1 00:00:00 +0000 2015",
         'type':'fun',
         'title':'hello',
-        'content':'<p>This is the content of the test item which I have made long in this instance to test some styles.</p><p>It might contain a number of paragraphs.</p>'
+        'content':'<p>This is the content of the test item which I have made long in this instance to test some styles.</p><p>It might contain a number of paragraphs.</p><p>test</p><p>test</p>'
     }
 ];
 
@@ -283,8 +283,11 @@ $(function() {
         lenny.tlselected = $(this).index();
         var h = $(this).find('.content').outerHeight() + 20; //slightly cheating trick to get around the need for overflow:hidden on the timeline
         lenny.$tl.css('margin-bottom',h);
+        $('html,body').animate({
+            scrollTop: $('#time').outerHeight() - 60
+        }, 500);
     });
-    
+
     //take the timeline right back to the beginning
     $('#resetstart').on('click',function(e){
         e.preventDefault();

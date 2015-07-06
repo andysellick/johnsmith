@@ -33,64 +33,6 @@ var timer;
 
 //other, education, job, first, travel, fun
 
-//fixme this has to be sorted
-var timeline = [
-    {
-        'date':"Jan 1 00:00:00 +0000 2014",
-        'type':'other',
-        'title':'This is a test item',
-        'content':'<p>This is the content of the test item.</p><p>It might contain a number of paragraphs.</p><p>test</p><p>test</p>'
-    },
-    {
-        'date':"Feb 1 00:00:00 +0000 2014",
-        'type':'education',
-        'title':'This is another test item',
-        'content':'<p>This is the content of the test item.</p><p>It might contain a number of paragraphs.</p><p>And what if it does, and that causes a huge space problem?</p><p>Well maybe I have been clever and fixed it. What do you think of that, eh?</p><p>test</p><p>test</p>'
-    },
-    {
-        'date':"Apr 1 00:00:00 +0000 2014",
-        'type':'job',
-        'title':'Boomtown',
-        'content':'<p>This is the content of the test item.</p><p>It might contain a number of paragraphs.</p><p>And what if it does, and that causes a huge space problem?</p><p>test</p><p>test</p>'
-    },
-    {
-        'date':"Jul 1 00:00:00 +0000 2014",
-        'type':'first',
-        'title':'Boomtown',
-        'content':'<p>This is the content of the test item.</p><p>test</p><p>test</p>'
-    },
-    {
-        'date':"Mar 1 00:00:00 +0000 2015",
-        'type':'travel',
-        'title':'This is another test item',
-        'content':'<p>This is the content of the test item.</p><p>It might contain a number of paragraphs.</p><p>test</p><p>test</p>'
-    },
-    {
-        'date':"Mar 2 00:00:00 +0000 2015",
-        'type':'fun',
-        'title':'This is another test item',
-        'content':'<p>This is the content of the test item.</p><p>It might contain a number of paragraphs.</p><p>test</p><p>test</p>'
-    },
-    {
-        'date':"Mar 3 00:00:00 +0000 2015",
-        'type':'fun',
-        'title':'This is another test item',
-        'content':'<p>This is the content of the test item.</p><p>It might contain a number of paragraphs.</p><p>test</p><p>test</p>'
-    },
-    {
-        'date':"Apr 1 00:00:00 +0000 2015",
-        'type':'fun',
-        'title':'hello',
-        'content':'<p>This is the content of the test item which I have made long in this instance to test some styles.</p><p>It might contain a number of paragraphs.</p><p>It might contain a number of paragraphs.</p><p>It might contain a number of paragraphs.</p><p>It might contain a number of paragraphs.</p><p>It might contain a number of paragraphs.</p><p>It might contain a number of paragraphs.</p><p>It might contain a number of paragraphs.</p><p>It might contain a number of paragraphs.</p><p>It might contain a number of paragraphs.</p><p>It might contain a number of paragraphs.</p><p>It might contain a number of paragraphs.</p><p>It might contain a number of paragraphs.</p><p>It might contain a number of paragraphs.</p><p>It might contain a number of paragraphs.</p><p>It might contain a number of paragraphs.</p><p>It might contain a number of paragraphs.</p><p>It might contain a number of paragraphs.</p><p>It might contain a number of paragraphs.</p><p>It might contain a number of paragraphs.</p><p>It might contain a number of paragraphs.</p><p>It might contain a number of paragraphs.</p><p>It might contain a number of paragraphs.</p><p>test</p><p>test</p>'
-    },
-    {
-        'date':"Sep 1 00:00:00 +0000 2015",
-        'type':'fun',
-        'title':'hello',
-        'content':'<p>This is the content of the test item which I have made long in this instance to test some styles.</p><p>It might contain a number of paragraphs.</p><p>test</p><p>test</p>'
-    }
-];
-
 (function( window, undefined ) {
 var lenny = {
     $tl: 0, //the timeline element
@@ -318,7 +260,7 @@ $(function() {
         e.preventDefault();
         e.stopPropagation();
         var thisone = lenny.$tl.find('.tlitem').first();
-        //$('#timeline').find('.tlitem').eq(thisone.index()).trigger('click');
+        thisone.trigger('click');
         var pos = thisone.position();
         pos = pos.left - lenny.tloffset + lenny.tlmarginleft;
         lenny.timeline.setTimeLinePos(pos);
@@ -335,7 +277,6 @@ $(function() {
         var pos = thisone.position();
         pos = pos.left - lenny.tloffset + lenny.tlmarginleft;
         lenny.timeline.setTimeLinePos(pos);
-        //lenny.timeline.setTimeLinePos(lenny.tllength - ($(window).outerWidth() / 1.5) + lenny.tlmarginleft); //timeline has a margin left of 500px, need to include this
         $("#timeline").smoothTouchScroll();
     });
 
